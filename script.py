@@ -1,21 +1,42 @@
 from Bio import SeqIO
 import os
 
-def summarize_contents(nombre_archivo):
-    resumen = "name: " + nombre_archivo
+archivo = os.path.abspath("AF323668.gbk")
 
-    resumen += "\npath: " + os.path.abspath(nombre_archivo)
-
-    records = list(SeqIO.parse(nombre_archivo,"genbank"))
+def summarize_contents (nombre_archivo):
+    listaOs = os.path.split(nombre_archivo)
+    listaExt = os.path.splitext(nombre_archivo)
     
-    resumen += "\nnum_records: " + str(len(records))
+    if listaExt[1] == ".gbk":
+        tipoArchivo = "genbank"
+    else:
+        tipoArchivo = "fasta"
+    
 
-    resumen += "\nrecords: "
-    for seq_record in SeqIO.parse(nombre_archivo, "genbank"):
-        resumen += "\n - id: " + seq_record.id
+    record = list(SeqIO.parse(nombre_archivo,tipoArchivo))
 
-        resumen += "\n   name: " + seq_record.name
+    #Creacion del diccionario 
+    d = {}
+    
+    d['File:'] = listaOs[1]
+    d['Path:'] = listaOs[0]
+    
+    d['Num_records:'] = len(record)
 
-        resumen += "\n   description: " + seq_record.description
+    #Diccionarios para el nombre, id y descripcion de cada record
+    d['Names:'] = []
+    d['IDs:'] = []
+    d['Descriptions:'] = []
 
-    return resumen
+    #Asignacion de records
+    for seq_record in SeqIO.parse(nombre_archivo,tipoArchivo):
+        d['Names:'].append(seq_record.name)
+        d['IDs:'].append(seq_record.id)
+        d['Descriptions:'].append(seq_record.description)
+
+    return d
+
+#Llamada a la funcion
+if __name__ == "__main__":
+	resultados = summarize_contents(archivo)
+	print(resultados)
