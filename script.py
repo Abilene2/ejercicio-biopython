@@ -2,7 +2,7 @@ from Bio import SeqIO, Seq
 from Bio.Seq import Seq
 import os
 
-archivo = os.path.abspath("AF323668.gbk")
+#archivo = os.path.abspath("AF323668.gbk")
 
 #Definicion de la funcion summarize_contents()
 def summarize_contents (nombre_archivo):
@@ -38,20 +38,10 @@ def summarize_contents (nombre_archivo):
 
     return d
 
-#Llamada a la funcion
-if __name__ == "__main__":
-	resultados = summarize_contents(archivo)
-	print(resultados)
-
-
-s1 = Seq("TTTTT")
-s2 = Seq("AAGAA")
-
 #Definicion de la funcion concatenat_and_get_reverse_of_complement
 def concatenate_and_get_reverse_of_complement(seq_1, seq_2):
-    seq_conc = seq_1 + seq_2
-    return seq_conc.reverse_complement()
-
-s = concatenate_and_get_reverse_of_complement(s1,s2)
-
-print(s)
+    if (type(seq_1)==Seq) & (type(seq_2) ==Seq):
+        seq_conc = seq_1 + seq_2
+        return seq_conc.reverse_complement()
+    else:
+        return ("No es una secuencia")
