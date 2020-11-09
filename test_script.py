@@ -1,5 +1,6 @@
 import unittest
 import script
+from Bio.Seq import Seq
 
 #Clase para probar la funcion
 class Test(unittest.TestCase): 
@@ -57,6 +58,35 @@ class Test(unittest.TestCase):
               'Descriptions:': ['gi|6273291|gb|AF191665.1|AF191665 Opuntia marenae rpl16 gene; chloroplast gene for chloroplast product, partial intron sequence', 'gi|6273290|gb|AF191664.1|AF191664 Opuntia clavata rpl16 gene; chloroplast gene for chloroplast product, partial intron sequence', 'gi|6273289|gb|AF191663.1|AF191663 Opuntia bradtiana rpl16 gene; chloroplast gene for chloroplast product, partial intron sequence', 'gi|6273287|gb|AF191661.1|AF191661 Opuntia kuehnrichiana rpl16 gene; chloroplast gene for chloroplast product, partial intron sequence', 'gi|6273286|gb|AF191660.1|AF191660 Opuntia echinacea rpl16 gene; chloroplast gene for chloroplast product, partial intron sequence', 'gi|6273285|gb|AF191659.1|AF191659 Opuntia pachypus rpl16 gene; chloroplast gene for chloroplast product, partial intron sequence', 'gi|6273284|gb|AF191658.1|AF191658 Opuntia subulata rpl16 gene; chloroplast gene for chloroplast product, partial intron sequence']}
         s = script.summarize_contents("/home/aby/EjercicioBioinformatica/ejercicio-biopython/data/opuntia.fasta")
         self.assertEqual(d6, s)
+
+
+    def test_concatenate_and_get_reverse_of_complement(self):
+        seq1_1 = Seq("ACTGTAAGTTTG")
+        seq1_2 = Seq("TTGCACAG")
+        seq1 =  seq1_1 + seq1_2
+        p1 = script.concatenate_and_get_reverse_of_complement(seq1_1,seq1_2)
+        self.assertEqual(seq1.reverse_complement(),p1)
+
+        seq2_1 = Seq("ACcctt")
+        seq2_2 = Seq("CCAAtt")
+        seq2 = seq2_1 + seq2_2
+        p2 = script.concatenate_and_get_reverse_of_complement(seq2_1,seq2_2)
+        self.assertEqual(seq2.reverse_complement(),p2)
+
+        seq3_1 = Seq("ag")
+        seq3_2 = Seq("")
+        seq3 = seq3_1 + seq3_2
+        p3 = script.concatenate_and_get_reverse_of_complement(seq3_1,seq3_2)
+        self.assertEqual(seq3.reverse_complement(),p3)
+
+        seq4 = "accct"
+        p4 = script.concatenate_and_get_reverse_of_complement(seq4,seq4)
+        self.assertEqual("No es una secuencia",p4)
+
+        seq5_1 = Seq("actg")
+        seq5_2 = "cct"
+        p4 = script.concatenate_and_get_reverse_of_complement(seq5_1,seq5_2)
+        self.assertEqual("No es una secuencia",p4)
 
 if __name__ == '__main__':
     unittest.main()
