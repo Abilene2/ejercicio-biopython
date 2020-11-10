@@ -44,4 +44,4 @@ def concatenate_and_get_reverse_of_complement(seq_1, seq_2):
         seq_conc = seq_1 + seq_2
         return seq_conc.reverse_complement()
     else:
-        return ("No es una secuencia")
+        raise TypeError("No es una secuencia")
