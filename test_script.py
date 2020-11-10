@@ -80,13 +80,14 @@ class Test(unittest.TestCase):
         self.assertEqual(seq3.reverse_complement(),p3)
 
         seq4 = "accct"
-        p4 = script.concatenate_and_get_reverse_of_complement(seq4,seq4)
-        self.assertEqual("No es una secuencia",p4)
+        with self.assertRaises(TypeError):
+            self.assertEqual(seq4,script.concatenate_and_get_reverse_of_complement(seq4,seq4))
 
         seq5_1 = Seq("actg")
         seq5_2 = "cct"
-        p4 = script.concatenate_and_get_reverse_of_complement(seq5_1,seq5_2)
-        self.assertEqual("No es una secuencia",p4)
+        with self.assertRaises(TypeError):
+            self.assertEqual(seq5_1,script.concatenate_and_get_reverse_of_complement(seq5_1,seq5_2))
+
 
 if __name__ == '__main__':
     unittest.main()
