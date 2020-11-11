@@ -1,6 +1,7 @@
 import unittest
 import script
 from Bio.Seq import Seq
+from Bio import BiopythonWarning
 
 #Clase para probar la funcion
 class Test(unittest.TestCase): 
@@ -61,33 +62,69 @@ class Test(unittest.TestCase):
 
 
     def test_concatenate_and_get_reverse_of_complement(self):
-        seq1_1 = Seq("ACTGTAAGTTTG")
-        seq1_2 = Seq("TTGCACAG")
-        seq1 =  seq1_1 + seq1_2
+        seq1_1 = "ACTGTAAGTTTG"
+        seq1_2 = "TTGCACAG"
+        seq1 =  Seq(seq1_1) + Seq(seq1_2)
         p1 = script.concatenate_and_get_reverse_of_complement(seq1_1,seq1_2)
         self.assertEqual(seq1.reverse_complement(),p1)
 
-        seq2_1 = Seq("ACcctt")
-        seq2_2 = Seq("CCAAtt")
-        seq2 = seq2_1 + seq2_2
+        seq2_1 = "ACcctt"
+        seq2_2 = "CCAAtt"
+        seq2 = Seq(seq2_1) + Seq(seq2_2)
         p2 = script.concatenate_and_get_reverse_of_complement(seq2_1,seq2_2)
         self.assertEqual(seq2.reverse_complement(),p2)
 
-        seq3_1 = Seq("ag")
-        seq3_2 = Seq("")
-        seq3 = seq3_1 + seq3_2
+        seq3_1 = "ag"
+        seq3_2 = ""
+        seq3 = Seq(seq3_1) + Seq(seq3_2)
         p3 = script.concatenate_and_get_reverse_of_complement(seq3_1,seq3_2)
         self.assertEqual(seq3.reverse_complement(),p3)
 
-        seq4 = "accct"
+        seq4 = Seq("accct")
         with self.assertRaises(TypeError):
             self.assertEqual(seq4,script.concatenate_and_get_reverse_of_complement(seq4,seq4))
 
         seq5_1 = Seq("actg")
         seq5_2 = "cct"
         with self.assertRaises(TypeError):
-            self.assertEqual(seq5_1,script.concatenate_and_get_reverse_of_complement(seq5_1,seq5_2))
+            self.assertEqual(seq5_1,script.concatenate_and_get_reverse_of_complement(seq5_1,seq5_2))  
 
+    def test_print_proteins_and_codons_using_standard_table(self):
+        seq1 = "ATGGCCATTGTAATGGGCCGCAAGGGTGCCCGATAG"
+        d1 = {'mRNA': [Seq('AUGGCCAUUGUAAUGGGCCGCAAGGGUGCCCGAUAG')], 
+              'protein': Seq('MAIVMGRKGAR'), 
+              'stop_codon': ['TAG']}
+        s = script.print_proteins_and_codons_using_standard_table(seq1)
+        self.assertEqual(d1,s)
+
+        seq2 = "GCCATTGTAGGCCGCAAGGGTGCCCGATAG"
+        d2 = {'mRNA': [Seq('GCCAUUGUAGGCCGCAAGGGUGCCCGAUAG')], 
+              'protein': [], 
+              'stop_codon': []}
+        s = script.print_proteins_and_codons_using_standard_table(seq2)
+        self.assertEqual(d2,s)
+
+        seq3 = "ATGGCCATTGTAATGGGCCGCAAGGGTGCCCGA"
+        d3 = {'mRNA': [Seq('AUGGCCAUUGUAAUGGGCCGCAAGGGUGCCCGA')], 
+              'protein': Seq('MAIVMGRKGAR'), 
+              'stop_codon': []}
+        s = script.print_proteins_and_codons_using_standard_table(seq3)
+        self.assertEqual(d3,s)
+
+        seq4 = "GCCATTGTAGGCCGCAAGGGTGCCCGA"
+        d4 = {'mRNA': [Seq('GCCAUUGUAGGCCGCAAGGGUGCCCGA')], 
+              'protein': [], 
+              'stop_codon': []}
+        s = script.print_proteins_and_codons_using_standard_table(seq4)
+        self.assertEqual(d4,s)
+
+        #Secuencia no es multiplo de 3, debe dar una advertencia 
+        seq5 = "ATGGCCATTGTAATGGGCCGCAAGGGTGCCCG"
+        d5 = {'mRNA': [Seq('AUGGCCAUUGUAAUGGGCCGCAAGGGUGCCCG')], 
+              'protein': Seq('MAIVMGRKGA'), 
+              'stop_codon': []}
+        with self.assertWarns(BiopythonWarning):
+            self.assertEqual(d5,script.print_proteins_and_codons_using_standard_table(seq5))
 
 if __name__ == '__main__':
     unittest.main()
