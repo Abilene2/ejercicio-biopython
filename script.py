@@ -111,7 +111,7 @@ def print_proteins_and_codons_using_standard_table(seq):
                  
     return d
 
-#Definicion de la funcion print_proteins_and_codons_using_mitocondrial_yeast_table
+#Definicion de la funcion print_proteins_and_codons_using_standard_table
 def print_proteins_and_codons_using_mitocondrial_yeast_table(seq):
     dna = Seq(seq)
     mRna = dna.transcribe()
@@ -130,18 +130,18 @@ def print_proteins_and_codons_using_mitocondrial_yeast_table(seq):
             posicion_inicio = codon
             dnaCoding = dna[codon:len(dna)]
             
-            d["protein"] = dnaCoding.translate(to_stop = True)
+            d["protein"] = dnaCoding.translate(to_stop = True, table = 3)
             #Si hay codon de inicio
             codon_inicio = True
             #Solo para encontrar un codon 
             break
 
-         if "ATA" in dna[codon:codon+3]:
+        if "ATA" in dna[codon:codon+3]:
             #Variable con la posicion del primer aa del codon de inicio
             posicion_inicio = codon
             dnaCoding = dna[codon:len(dna)]
             
-            d["protein"] = dnaCoding.translate(to_stop = True)
+            d["protein"] = dnaCoding.translate(to_stop = True, table = 3)
             #Si hay codon de inicio
             codon_inicio = True
             #Solo para encontrar un codon 
@@ -152,7 +152,7 @@ def print_proteins_and_codons_using_mitocondrial_yeast_table(seq):
             posicion_inicio = codon
             dnaCoding = dna[codon:len(dna)]
             
-            d["protein"] = dnaCoding.translate(to_stop = True)
+            d["protein"] = dnaCoding.translate(to_stop = True, table = 3)
             #Si hay codon de inicio
             codon_inicio = True
             #Solo para encontrar un codon 
