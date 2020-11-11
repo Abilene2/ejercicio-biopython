@@ -40,11 +40,13 @@ def summarize_contents (nombre_archivo):
 
 #Definicion de la funcion concatenat_and_get_reverse_of_complement
 def concatenate_and_get_reverse_of_complement(seq_1, seq_2):
-    if (type(seq_1)==Seq) & (type(seq_2) ==Seq):
-        seq_conc = seq_1 + seq_2
+    if (type(seq_1)==str) & (type(seq_2) == str):
+        S1 = Seq(seq_1)
+        S2 = Seq(seq_2)
+        seq_conc = S1 + S2
         return seq_conc.reverse_complement()
     else:
-        raise TypeError("No es una secuencia")  
+        raise TypeError("No es una cadena")  
 
 
 
