@@ -48,8 +48,6 @@ def concatenate_and_get_reverse_of_complement(seq_1, seq_2):
     else:
         raise TypeError("No es una cadena")  
 
-
-
 #Definicion de la funcion print_proteins_and_codons_using_standard_table
 def print_proteins_and_codons_using_standard_table(seq):
     dna = Seq(seq)
@@ -58,10 +56,10 @@ def print_proteins_and_codons_using_standard_table(seq):
     #Diccionario 
     d = {}
     d["mRNA"] = [mRna]
-    
-    
     d["protein"] = []
-    #Chechar si tiene codon de inicio
+    d["stop_codon"] = []
+
+    #Revisar si tiene codon de inicio
     codon_inicio = False
     for codon in range(0,len(dna),3):
         if "ATG" in dna[codon:codon+3]:
@@ -74,8 +72,29 @@ def print_proteins_and_codons_using_standard_table(seq):
             codon_inicio = True
             #Solo para encontrar un codon 
             break
-    
-    d["stop_codon"] = []
+
+        if "CTG" in dna[codon:codon+3]:
+            #Variable con la posicion del primer aa del codon de inicio
+            posicion_inicio = codon
+            dnaCoding = dna[codon:len(dna)]
+            
+            d["protein"] = dnaCoding.translate(to_stop = True)
+            #Si hay codon de inicio
+            codon_inicio = True
+            #Solo para encontrar un codon 
+            break
+
+        if "TTG" in dna[codon:codon+3]:
+            #Variable con la posicion del primer aa del codon de inicio
+            posicion_inicio = codon
+            dnaCoding = dna[codon:len(dna)]
+            
+            d["protein"] = dnaCoding.translate(to_stop = True)
+            #Si hay codon de inicio
+            codon_inicio = True
+            #Solo para encontrar un codon 
+            break
+
     #Si si lo hay buscar codon de paro despues del codon de inicio  
     if codon_inicio == True:
         for codon in range(0,len(dna),3):
@@ -88,6 +107,66 @@ def print_proteins_and_codons_using_standard_table(seq):
                 break
             if ("TGA" in dna[codon:codon+3]) & (posicion_inicio < codon):
                 d["stop_codon"].append("TGA")
+                break
+                 
+    return d
+
+#Definicion de la funcion print_proteins_and_codons_using_mitocondrial_yeast_table
+def print_proteins_and_codons_using_mitocondrial_yeast_table(seq):
+    dna = Seq(seq)
+    mRna = dna.transcribe()
+     
+    #Diccionario 
+    d = {}
+    d["mRNA"] = [mRna]
+    d["protein"] = []
+    d["stop_codon"] = []
+
+    #Revisar si tiene codon de inicio
+    codon_inicio = False
+    for codon in range(0,len(dna),3):
+        if "ATG" in dna[codon:codon+3]:
+            #Variable con la posicion del primer aa del codon de inicio
+            posicion_inicio = codon
+            dnaCoding = dna[codon:len(dna)]
+            
+            d["protein"] = dnaCoding.translate(to_stop = True)
+            #Si hay codon de inicio
+            codon_inicio = True
+            #Solo para encontrar un codon 
+            break
+
+         if "ATA" in dna[codon:codon+3]:
+            #Variable con la posicion del primer aa del codon de inicio
+            posicion_inicio = codon
+            dnaCoding = dna[codon:len(dna)]
+            
+            d["protein"] = dnaCoding.translate(to_stop = True)
+            #Si hay codon de inicio
+            codon_inicio = True
+            #Solo para encontrar un codon 
+            break
+
+        if "GTG" in dna[codon:codon+3]:
+            #Variable con la posicion del primer aa del codon de inicio
+            posicion_inicio = codon
+            dnaCoding = dna[codon:len(dna)]
+            
+            d["protein"] = dnaCoding.translate(to_stop = True)
+            #Si hay codon de inicio
+            codon_inicio = True
+            #Solo para encontrar un codon 
+            break
+
+    #Si si lo hay buscar codon de paro despues del codon de inicio  
+    if codon_inicio == True:
+        for codon in range(0,len(dna),3):
+            #print(dna[codon:codon+3])
+            if ("TAG" in dna[codon:codon+3]) & (posicion_inicio < codon):
+                d["stop_codon"].append("TAG")
+                break
+            if ("TAA" in dna[codon:codon+3]) & (posicion_inicio < codon):
+                d["stop_codon"].append("TAA")
                 break
                  
     return d
