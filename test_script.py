@@ -126,5 +126,44 @@ class Test(unittest.TestCase):
         with self.assertWarns(BiopythonWarning):
             self.assertEqual(d5,script.print_proteins_and_codons_using_standard_table(seq5))
 
+    def test_print_proteins_and_codons_using_mitocondrial_yeast_table(self):
+        seq1 = "GTGGAATCCGACGGACGGAGTGGATGACTCCCATCTTTTAATTAG"
+        d1 = {'mRNA': [Seq('GUGGAAUCCGACGGACGGAGUGGAUGACUCCCAUCUUUUAAUUAG')], 
+              'protein': Seq('VESDGRSGWTPSFN'), 
+              'stop_codon': ['TAG']} 
+        s = script.print_proteins_and_codons_using_mitocondrial_yeast_table(seq1)
+        self.assertEqual(d1,s)
+
+        seq2 = "GAATCCGACGGACGGAGTGGATGACTCCCATCTTTTAATTAG"
+        d2 = {'mRNA': [Seq('GAAUCCGACGGACGGAGUGGAUGACUCCCAUCUUUUAAUUAG')], 
+              'protein': [], 
+              'stop_codon': []}
+        s = script.print_proteins_and_codons_using_mitocondrial_yeast_table(seq2)
+        self.assertEqual(d2,s)
+
+        seq3 = "GTGGAATCCGACGGACGGAGTGGATGACTCCCATCTTTTAAT"
+        d3 = {'mRNA': [Seq('GUGGAAUCCGACGGACGGAGUGGAUGACUCCCAUCUUUUAAU')], 
+              'protein': Seq('VESDGRSGWTPSFN'), 
+              'stop_codon': []} 
+        s = script.print_proteins_and_codons_using_mitocondrial_yeast_table(seq3)
+        self.assertEqual(d3,s)
+
+        seq4 = "GAATCCGACGGACGGAGTGGATGACTCCCATCTTTTAAT"
+        d4 = {'mRNA': [Seq('GAAUCCGACGGACGGAGUGGAUGACUCCCAUCUUUUAAU')], 
+              'protein': [], 
+              'stop_codon': []}
+        s = script.print_proteins_and_codons_using_mitocondrial_yeast_table(seq4)
+        self.assertEqual(d4,s)
+
+        #Secuencia no es multiplo de 3, debe dar una advertencia 
+        seq5 = "GTGGAATCCGACGGACGGAGTGGATGACTCCCATCTTTAATTAG"
+        d5 = {'mRNA': [Seq('GUGGAAUCCGACGGACGGAGUGGAUGACUCCCAUCUUUAAUUAG')], 
+              'protein': Seq('VESDGRSGWTPSLI'), 
+              'stop_codon': []}
+        with self.assertWarns(BiopythonWarning):
+            self.assertEqual(d5,script.print_proteins_and_codons_using_mitocondrial_yeast_table(seq5))
+
+
+
 if __name__ == '__main__':
     unittest.main()
