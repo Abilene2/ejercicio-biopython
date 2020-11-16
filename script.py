@@ -168,5 +168,21 @@ def print_proteins_and_codons_using_mitocondrial_yeast_table(seq):
             if ("TAA" in dna[codon:codon+3]) & (posicion_inicio < codon):
                 d["stop_codon"].append("TAA")
                 break
-                 
+            
     return d
+
+def extract_sequences(nombre_archivo):
+    with open(nombre_archivo, "r") as sequences:
+        i = 1
+        for line in sequences:
+            if ">" in line:
+                nombre = "sequence" + str(i) + ".fasta"
+                archivo = open(nombre, 'w')
+                archivo.write(line)
+            else:
+                archivo = open(nombre, 'a')
+                archivo.write(line)
+                archivo.close()
+                i = i + 1
+
+#extract_sequences("sequences.fasta")
