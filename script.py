@@ -171,18 +171,22 @@ def print_proteins_and_codons_using_mitocondrial_yeast_table(seq):
             
     return d
 
-def extract_sequences(nombre_archivo):
-    with open(nombre_archivo, "r") as sequences:
-        i = 1
-        for line in sequences:
-            if ">" in line:
-                nombre = "sequence" + str(i) + ".fasta"
-                archivo = open(nombre, 'w')
-                archivo.write(line)
-            else:
-                archivo = open(nombre, 'a')
-                archivo.write(line)
-                archivo.close()
-                i = i + 1
+def extract_sequences(nombre_archivo, formato_salida):
+    if (formato_salida == "fasta") or (formato_salida == "gbk"):
+        record = list(SeqIO.parse(nombre_archivo,"fasta"))
+        ids = [seq_record.id for seq_record in SeqIO.parse(nombre_archivo,"fasta")]
+        seqs = [seq_record.seq for seq_record in SeqIO.parse(nombre_archivo,"fasta")]
+        num_seq = len(record)
+
+        for i in range(0,len(record)):
+            nombre = "sequence" + str(i+1) + '.' + formato_salida
+            archivo = open(nombre, 'w')
+            archivo.write('>')
+            archivo.write(ids[i])
+            archivo.write('\n')
+            archivo.write(str(seqs[i]))
+            archivo.close()
+    else:
+        raise TypeError ("El formato debe ser 'fasta' o 'gbk'")
 
 #extract_sequences("sequences.fasta")
