@@ -197,14 +197,15 @@ def extract_sequences(nombre_archivo, formato_salida):
 def extract_sequences_revcomp(nombre_archivo):
     listaExt = os.path.splitext(nombre_archivo)
     nom_archivo = listaExt[0] + "_revcomp.fasta"
-    archivo = open(nom_archivo, 'w')
-    for record in SeqIO.parse(nombre_archivo,"fasta"):
-        archivo.write('>')
-        archivo.write(record.id)
-        archivo.write('\n')
-        archivo.write(str(record.seq.reverse_complement()))
-        archivo.write('\n')
-    archivo.close() 
+    formato = listaExt[1] 
+    if formato == ".fasta"
+        archivo = open(nom_archivo, 'w')
+        for record in SeqIO.parse(nombre_archivo,"fasta"):
+            archivo.write(str(record.seq.reverse_complement()))
+            archivo.write('\n')
+        archivo.close() 
+    else:
+        raise TypeError ("Unicamente se reciben archivos .fasta")
 
 
 
